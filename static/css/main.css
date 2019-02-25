@@ -1,0 +1,29 @@
+.twitter-tweet {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+div#main.container {
+    padding-bottom: 80px;
+}
+
+footer {
+    padding: 4rem 0;
+    color: #e9ecef;
+    background-color: #343a40;
+}
+  
+footer .copyright {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+    
+ul.list-inline {
+    display: flex;
+    justify-content: center;
+}
+
+blockquote.twitter-tweet {
+    padding-top: 10px;
+    padding-bottom: 5px;
+}

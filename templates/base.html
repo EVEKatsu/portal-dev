@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  {% block head %}
+  <title>{{ SITENAME }}</title>
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@evekatsu" />
+  <meta name="twitter:title" content="{{ SITENAME }}" />
+  <meta name="twitter:url" content="{{ SITEURL }}" />
+  <meta name="twitter:image:src" content="{{ SITEURL }}/static/images/icon.png" />
+  <meta name="twitter:description" content="EVE Online日本コミュニティのポータルサイトです" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ SITENAME }}" />
+  <meta property="og:url" content="{{ SITEURL }}" />
+  <meta property="og:image" content="{{ SITEURL }}/static/images/icon.png" />
+  <meta property="og:description" content="EVE Online日本コミュニティのポータルサイトです" />
+
+  {% endblock head %}
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/icon.png') }}" type="image/png" />
+
+  <style type="text/css">
+  .bs-component + .bs-component {
+    margin-top: 1rem;
+  }
+  @media (min-width: 768px) {
+    .bs-docs-section {
+      margin-top: 8em;
+    }
+    .bs-component {
+      position: relative;
+    }
+    .bs-component .modal {
+      position: relative;
+      top: auto;
+      right: auto;
+      bottom: auto;
+      left: auto;
+      z-index: 1;
+      display: block;
+    }
+    .bs-component .modal-dialog {
+      width: 90%;
+    }
+    .bs-component .popover {
+      position: relative;
+      display: inline-block;
+      width: 220px;
+      margin: 20px;
+    }
+    .nav-tabs {
+      margin-bottom: 15px;
+    }
+    .progress {
+      margin-bottom: 10px;
+    }
+  }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='images/icon.png') }}" width="30" height="30" class="d-inline-block align-top mr-1" alt="Evekatsu">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav mr-auto">
+          {% for title, link in MENUITEMS %}
+          <li class="nav-item {% if request.endpoint == link %}active{% endif %}">
+              <a class="nav-link" href="{{ url_for(link) }}">{{ title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div id="main" class="container">
+  {% block content %}
+  {% endblock content %}
+</div>
+
+
+<footer class="small">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center copyright">
+        © {{ DATETIME.strftime('%Y') }} Evekatsu
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+<script type="text/javascript">
+  $('.bs-component [data-toggle="popover"]').popover();
+  $('.bs-component [data-toggle="tooltip"]').tooltip();
+</script>
+</body>
+</html>
