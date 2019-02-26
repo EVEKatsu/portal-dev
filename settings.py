@@ -2,6 +2,8 @@ import os
 
 DEBUG = os.environ.get('EVEKATSU_DEBUG', 'false').lower() == 'true'
 
+VERSION = '1'
+
 #DAMMY_TWITTER_ID = os.environ.get('DAMMY_TWITTER_ID', 'kx6txew2')
 
 DEFAULT_PAGINATION = 50

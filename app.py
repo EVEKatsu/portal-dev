@@ -15,6 +15,7 @@ def default_kwargs():
     'SITENAME': 'イブカツ！',
     'SITEURL': 'https://evekatsu.herokuapp.com',
     'DATETIME': datetime.now(),
+    'VERSION': settings.VERSION,
     'MENUITEMS': (
         ('ツイッター', 'tweets'),
         ('ブログ', 'feeds'),
