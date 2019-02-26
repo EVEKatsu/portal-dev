@@ -21,22 +21,30 @@
 {% endblock head %}
 
 {% block content %}
-    {% for tweet in tweets.items %}
-        <blockquote style="display: none" class="twitter-tweet" data-lang="ja" data-conversation="none" data-cards="hidden" data-align="center" data-width="550" data-height="300px">
-            <img src="{{ tweet.profile_image_url_https }}" style="float: left; margin-right: 5px;" />
-            <p>{{ tweet.text | safe }}</p>
-            <p style="clear:both;"></p>
-                &mdash; {{ tweet.name }} (@{{ tweet.screen_name }}) 
-                <a href="https://twitter.com/tsuyup/status/{{ tweet.id }}?ref_src=twsrc%5Etfw">{{ tweet.created_at.strftime('%Y年%-m月%-d日') }}</a>
-            </p>
-            <hr />
-        </blockquote>
+
+<div class="row tweets-menu">
+    {% for title, link in TWEETS_MENUITEMS %}
+        <a class="lead col-3 text-center tweets-menu-item{% if link == category %} active{% endif %}" href={{ url_for('tweets', page=1, category=link) }}>{{ title }}</a>
     {% endfor %}
+</div>
 
-    <div style="margin-top: 40px"></div>
-    {% import "_pagination.html" as p %}
-    {% if tweets %}
-        {{ p.pagination_widget(tweets, 'tweets') }}
-    {% endif %}
+{% for tweet in tweets.items %}
+    <blockquote style="display: none" class="twitter-tweet"  data-lang="ja" data-conversation="none" data-align="center" data-width="550" data-height="300px">
+        <img src="{{ tweet.profile_image_url_https }}" style="float: left; margin-right: 5px;" />
+        <p>{{ tweet.text | safe }}</p>
+        <p style="clear:both;"></p>
+            &mdash; {{ tweet.name }} (@{{ tweet.screen_name }}) 
+            <a href="https://twitter.com/{{ tweet.screen_name }}/status/{{ tweet.id }}?ref_src=twsrc%5Etfw">{{ tweet.created_at.strftime('%Y年%-m月%-d日') }}</a>
+        </p>
+        <hr />
+    </blockquote>
+{% endfor %}
+
+<div style="margin-top: 40px"></div>
+
+{% import "_pagination.html" as p %}
+{% if tweets %}
+    {{ p.pagination_widget(tweets, 'tweets', category=category) }}
+{% endif %}
+
 {% endblock content %}
-
