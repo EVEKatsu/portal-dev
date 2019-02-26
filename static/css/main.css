@@ -28,15 +28,15 @@ blockquote.twitter-tweet {
     padding-bottom: 5px;
 }
 
-.tweets-menu-item {
+.sub-menu-item {
     padding: 0.75rem 0rem;
     background-color: #6c757d;
     opacity: 0.65;
 }
-.tweets-menu-item.active {
+.sub-menu-item.active {
     opacity: 1;
 }
-a.tweets-menu-item {
+a.sub-menu-item {
     color: white;
 }
 

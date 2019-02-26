@@ -58,6 +58,7 @@ def update_tweets(category, query):
 if __name__ == "__main__":
     for category, query in settings.SEARCH_QUERIES:
          update_tweets(category, query)
+         db.session.commit()
 
     # q = settings.SEARCH_QUERIES[0]
     # update_tweets(q[0], q[1])

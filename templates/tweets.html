@@ -22,9 +22,9 @@
 
 {% block content %}
 
-<div class="row tweets-menu">
+<div class="row">
     {% for title, link in TWEETS_MENUITEMS %}
-        <a class="lead col-3 text-center tweets-menu-item{% if link == category %} active{% endif %}" href={{ url_for('tweets', page=1, category=link) }}>{{ title }}</a>
+        <a class="col-6 col-lg-3 text-center sub-menu-item{% if link == category %} active{% endif %}" href={{ url_for('tweets', page=1, category=link) }}>{{ title }}</a>
     {% endfor %}
 </div>
 
