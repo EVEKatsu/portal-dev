@@ -18,8 +18,6 @@ api = twitter.Api(
 BAN_USERS = [108954366, 2841563053]
 
 URL_PATTERN = r'https?:\/\/[-_\.!~*\'()a-zA-Z0-9;\/?:\@&=\+\$,%#]+'
-EXLUDE_TEXT_PATTEN = r'@[^ ]*eveonline[^ ]*'
-
 
 def update_tweets(category, query, exlude):
     results = api.GetSearch(raw_query='q=' + query + settings.DEFAULT_SEARCH_QUERY)
@@ -27,7 +25,10 @@ def update_tweets(category, query, exlude):
         params = result.AsDict()
 
         if exlude:
-            if 'eveonline' in params['user']['screen_name'].lower() or re.search(EXLUDE_TEXT_PATTEN, params['text'].lower()):
+            text = params['text'].lower()
+            if re.search(r'@[^ ]*eveonline[^ ]*', text):
+                continue
+            elif 'eveonline' in params['user']['screen_name'].lower() and not re.search(r'eve ?online', text):
                 continue
 
         exists = db.session.query(db.exists().where(Tweet.id == params['id'])).scalar()
