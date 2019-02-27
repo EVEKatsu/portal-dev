@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>ツイッター | {{ SITENAME }}</title>
-  
+<title>{{ title | default('ツイッター') }} | {{ SITENAME }}</title>
+ 
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@evekatsu" />
-<meta name="twitter:title" content="ツイッター | {{ SITENAME }}" />
+<meta name="twitter:title" content="{{ title | default('ツイッター') }} | {{ SITENAME }}" />
 <meta name="twitter:url" content="{{ SITEURL }}/tweets" />
 <meta name="twitter:image:src" content="{{ SITEURL }}/static/images/icon.png" />
-<meta name="twitter:description" content="#evejapan のツイート一覧です" />
+<meta name="twitter:description" content="{{ description | default('EVE Onlineを遊んでいる人たちのツイートです') }}" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="ツイッター | {{ SITENAME }}" />
+<meta property="og:title" content="{{ title | default('ツイッター') }} | {{ SITENAME }}" />
 <meta property="og:url" content="{{ SITEURL }}/tweets" />
 <meta property="og:image" content="{{ SITEURL }}/static/images/icon.png" />
-<meta property="og:description" content="#evejapan のツイート一覧です" />
+<meta property="og:description" content="{{ description | default('EVE Onlineを遊んでいる人たちのツイートです') }}" />
 
 <script src="https://platform.twitter.com/widgets.js"></script>
 

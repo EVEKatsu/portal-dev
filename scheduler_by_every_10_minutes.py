@@ -22,7 +22,7 @@ BAN_USERS = [
 ]
 
 
-def update_tweets(category, query, filter_type=None):
+def update_tweets(category, query, exclude_keyword, only_included_ids):
     results = api.GetSearch(raw_query=query)
 
     for result in results:
@@ -30,13 +30,15 @@ def update_tweets(category, query, filter_type=None):
         user = User.query.filter(User.id == params['user']['id']).first()
         user_exists = user != None
 
-        if filter_type == settings.SEARCH_EXCLUDE_KEYWORDS:
+        if exclude_keyword:
+            screen_name = params['user']['screen_name'].lower()
             text = params['text'].lower()
-            if re.search(r'@[^ ]*eveonline[^ ]*', text):
-                continue
-            elif 'eveonline' in params['user']['screen_name'].lower() and not re.search(r'eve ?online', text):
-                continue
-        elif filter_type == settings.SEARCH_ONLY_INCLUDED_ID and not user_exists:
+
+            if re.search(r'@[^ ]*' + exclude_keyword, text) or re.search(exclude_keyword, screen_name):
+                if not re.search(r' [^@ ]*' + exclude_keyword, ' ' + text):
+                    continue
+
+        if only_included_ids and not user_exists:
             continue
 
         tweet_exists = db.session.query(db.exists().where(Tweet.id == params['id'])).scalar()
@@ -82,8 +84,8 @@ def update_tweets_test():
 
 
 def main():
-    for category, query, filter_type in settings.SEARCH_QUERIES:
-        update_tweets(category, query, filter_type)
+    for category, query, exclude_keyword, only_included_ids in settings.SEARCH_QUERIES:
+        update_tweets(category, query, exclude_keyword, only_included_ids)
 
     User.query.update({'tweets_count': 0})
     limit_datetime = datetime.datetime.now() - datetime.timedelta(days=settings.DEADLINE_DAYS)

@@ -50,9 +50,13 @@ def users(page):
 @app.route('/user/<int:user_id>/', defaults={'category': 'all', 'page': 1})
 @app.route("/user/<int:user_id>/<string:category>/<int:page>")
 def user(user_id, category, page):
+  user = User.query.filter(User.id == user_id).first()
+  name = '%s(%s)さん' % (user.name, user.screen_name)
   kwargs = {
     'category': category,
     'endpoint': 'user',
+    'title': name,
+    'description': name + 'のEVE Onlineについてのツイートです',
     'pagination_kwargs': {
       'user_id': user_id,
     },

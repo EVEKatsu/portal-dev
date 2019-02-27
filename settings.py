@@ -15,18 +15,16 @@ TWEETS_MAXIMUM_LIMIT = int(os.environ.get('TWEETS_MAXIMUM_LIMIT', 6000))
 DEFAULT_CATEGORY = 'misc'
 DEFAULT_SEARCH_QUERY = '%20exclude%3Aretweets&src=typd&lang=ja&count=100'
 DEFAULT_MISC_QUERY = os.environ.get('DEFAULT_MISC_QUERY', 'q=eveonline%20OR%20"eve online"' + DEFAULT_SEARCH_QUERY)
-SEARCH_EXCLUDE_KEYWORDS = 'exclude_keywords'
-SEARCH_ONLY_INCLUDED_ID = 'only_included_id'
 SEARCH_QUERIES = [
-    # (category, query, filter)
-    ('evejapan', 'q=%23evejapan' + DEFAULT_SEARCH_QUERY,  None),
-    ('eveonline', 'q=%23eveonline' + DEFAULT_SEARCH_QUERY, None),
-    (DEFAULT_CATEGORY, DEFAULT_MISC_QUERY, SEARCH_EXCLUDE_KEYWORDS),
-    (DEFAULT_CATEGORY, 'q=eve' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
-    (DEFAULT_CATEGORY, 'q=イブ' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
-    (DEFAULT_CATEGORY, 'q=イヴ' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
-    (DEFAULT_CATEGORY, 'q=いぶ' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
-    (DEFAULT_CATEGORY, 'q="イブオンライン"' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
-    (DEFAULT_CATEGORY, 'q="イヴオンライン"' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
-    (DEFAULT_CATEGORY, 'q="いぶおんらいん"' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
+    # (category, query, exclude_keyword, only_included_ids)
+    ('evejapan', 'q=%23evejapan' + DEFAULT_SEARCH_QUERY,  None, False),
+    ('eveonline', 'q=%23eveonline' + DEFAULT_SEARCH_QUERY, None, False),
+    (DEFAULT_CATEGORY, DEFAULT_MISC_QUERY, r'eve ?online', False),
+    (DEFAULT_CATEGORY, 'q=eve' + DEFAULT_SEARCH_QUERY, r'eve', True),
+    (DEFAULT_CATEGORY, 'q=イブ' + DEFAULT_SEARCH_QUERY, None, True),
+    (DEFAULT_CATEGORY, 'q=イヴ' + DEFAULT_SEARCH_QUERY, None, True),
+    (DEFAULT_CATEGORY, 'q=いぶ' + DEFAULT_SEARCH_QUERY, None, True),
+    (DEFAULT_CATEGORY, 'q="イブオンライン"' + DEFAULT_SEARCH_QUERY, None, True),
+    (DEFAULT_CATEGORY, 'q="イヴオンライン"' + DEFAULT_SEARCH_QUERY, None, True),
+    (DEFAULT_CATEGORY, 'q="いぶおんらいん"' + DEFAULT_SEARCH_QUERY, None, True),
 ]
