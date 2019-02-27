@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+import re
 
 import twitter
 
@@ -16,11 +17,19 @@ api = twitter.Api(
 
 BAN_USERS = [108954366, 2841563053]
 
-def update_tweets(category, query):
-    results = api.GetSearch(raw_query='q=' + query + settings.DEFAULT_SEARCH_QUERY)
+URL_PATTERN = r'https?:\/\/[-_\.!~*\'()a-zA-Z0-9;\/?:\@&=\+\$,%#]+'
+EXLUDE_TEXT_PATTEN = r'@[^ ]*eve ?online[^ ]*'
 
+
+def update_tweets(category, query, exlude):
+    results = api.GetSearch(raw_query='q=' + query + settings.DEFAULT_SEARCH_QUERY)
     for result in results:
         params = result.AsDict()
+
+        if exlude:
+            if 'eveonline' in params['user']['screen_name'].lower() or re.search(EXLUDE_TEXT_PATTEN, params['text'].lower()):
+                continue
+
         exists = db.session.query(db.exists().where(Tweet.id == params['id'])).scalar()
 
         if 'retweeted_status' in params or params['user']['id'] in BAN_USERS or exists:
@@ -55,7 +64,14 @@ def update_tweets(category, query):
         )
         db.session.add(tweet)
 
-if __name__ == "__main__":
+
+def update_tweets_test(query_index):
+    q = settings.SEARCH_QUERIES[query_index]
+    update_tweets('test', q[1], True)
+    db.session.commit()
+
+
+def main():
     for category, query in settings.SEARCH_QUERIES:
          update_tweets(category, query)
          db.session.commit()
@@ -68,3 +84,7 @@ if __name__ == "__main__":
         Tweet.query.filter(Tweet.id == tweet.id).delete()
 
     db.session.commit()
+
+
+if __name__ == "__main__":
+    main()
