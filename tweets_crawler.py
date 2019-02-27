@@ -72,12 +72,9 @@ def update_tweets_test(query_index):
 
 
 def main():
-    for category, query in settings.SEARCH_QUERIES:
-         update_tweets(category, query)
+    for category, query, exlude in settings.SEARCH_QUERIES:
+         update_tweets(category, query, exlude)
          db.session.commit()
-
-    # q = settings.SEARCH_QUERIES[0]
-    # update_tweets(q[0], q[1])
 
     tweets = Tweet.query.order_by(Tweet.created_at.desc()).offset(1000)
     for tweet in tweets:
