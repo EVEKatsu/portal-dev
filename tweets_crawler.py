@@ -18,7 +18,7 @@ api = twitter.Api(
 BAN_USERS = [108954366, 2841563053]
 
 URL_PATTERN = r'https?:\/\/[-_\.!~*\'()a-zA-Z0-9;\/?:\@&=\+\$,%#]+'
-EXLUDE_TEXT_PATTEN = r'@[^ ]*eve ?online[^ ]*'
+EXLUDE_TEXT_PATTEN = r'@[^ ]*eveonline[^ ]*'
 
 
 def update_tweets(category, query, exlude):
