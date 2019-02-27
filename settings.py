@@ -2,18 +2,28 @@ import os
 
 DEBUG = os.environ.get('EVEKATSU_DEBUG', 'false').lower() == 'true'
 
-VERSION = '1'
-
-#DAMMY_TWITTER_ID = os.environ.get('DAMMY_TWITTER_ID', 'kx6txew2')
+VERSION = '2'
 
 DEFAULT_PAGINATION = int(os.environ.get('DEFAULT_PAGINATION', 30))
 
+MAXIMUM_LIMIT_TWEETS = int(os.environ.get('MAXIMUM_LIMIT_TWEETS', 5000))
+MAXIMUM_LIMIT_USERS = int(os.environ.get('MAXIMUM_LIMIT_USERS', 1000))
+
 DEFAULT_CATEGORY = 'misc'
 DEFAULT_SEARCH_QUERY = '%20exclude%3Aretweets&src=typd&lang=ja&count=100'
-#DEFAULT_MISC_QUERY = os.environ.get('DEFAULT_MISC_QUERY', '"eve%20online"%20eveonline%20-%40eveonline')
-DEFAULT_MISC_QUERY = os.environ.get('DEFAULT_MISC_QUERY', 'eveonline%20OR%20"eve online"')
+DEFAULT_MISC_QUERY = os.environ.get('DEFAULT_MISC_QUERY', 'q=eveonline%20OR%20"eve online"' + DEFAULT_SEARCH_QUERY)
+SEARCH_EXCLUDE_KEYWORDS = 'exclude_keywords'
+SEARCH_ONLY_INCLUDED_ID = 'only_included_id'
 SEARCH_QUERIES = [
-    ('evejapan', '%23evejapan', False),
-    ('eveonline', '%23eveonline', False),
-    (DEFAULT_CATEGORY, DEFAULT_MISC_QUERY, True),
+    # (category, query, filter)
+    ('evejapan', 'q=%23evejapan' + DEFAULT_SEARCH_QUERY,  None),
+    ('eveonline', 'q=%23eveonline' + DEFAULT_SEARCH_QUERY, None),
+    (DEFAULT_CATEGORY, DEFAULT_MISC_QUERY, SEARCH_EXCLUDE_KEYWORDS),
+    (DEFAULT_CATEGORY, 'q=eve' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
+    (DEFAULT_CATEGORY, 'q=イブ' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
+    (DEFAULT_CATEGORY, 'q=イヴ' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
+    (DEFAULT_CATEGORY, 'q=いぶ' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
+    (DEFAULT_CATEGORY, 'q="イブオンライン"' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
+    (DEFAULT_CATEGORY, 'q="イヴオンライン"' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
+    (DEFAULT_CATEGORY, 'q="いぶおんらいん"' + DEFAULT_SEARCH_QUERY, SEARCH_ONLY_INCLUDED_ID),
 ]

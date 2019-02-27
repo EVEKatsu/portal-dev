@@ -30,13 +30,7 @@
 
 {% for tweet in tweets.items %}
     <blockquote style="display: none" class="twitter-tweet"  data-lang="ja" data-align="center" data-width="550" data-height="300px">
-        <img src="{{ tweet.profile_image_url_https }}" style="float: left; margin-right: 5px;" />
-        <p>{{ tweet.text | safe }}</p>
-        <p style="clear:both;"></p>
-            &mdash; {{ tweet.name }} (@{{ tweet.screen_name }}) 
-            <a href="https://twitter.com/{{ tweet.screen_name }}/status/{{ tweet.id }}?ref_src=twsrc%5Etfw">{{ tweet.created_at.strftime('%Y年%-m月%-d日') }}</a>
-        </p>
-        <hr />
+        <a href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}?ref_src=twsrc%5Etfw"></a>
     </blockquote>
 {% endfor %}
 
