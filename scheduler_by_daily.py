@@ -4,17 +4,32 @@ from models import Tweet, User
 
 
 def main():
-    tweets = Tweet.query.order_by(Tweet.created_at.desc()).offset(settings.MAXIMUM_LIMIT_TWEETS)
+    tweets = Tweet.query.order_by(Tweet.created_at.desc()).offset(settings.TWEETS_MAXIMUM_LIMIT)
     for tweet in tweets:
-        Tweet.query.filter(Tweet.id == tweet.id).delete()
+        db.session.delete(tweet)
 
-    users = User.query.order_by(User.updated_at.desc()).offset(settings.MAXIMUM_LIMIT_USERS)
-    for user in users:
-        User.query.filter(User.id == user.id).delete()
+    included_users = {}
+    for tweet in Tweet.query:
+        if tweet.user_id not in included_users:
+            included_users[tweet.user_id] = {
+                'name': tweet.user_name,
+                'screen_name': tweet.user_screen_name,
+                'description': tweet.user_description,
+                'profile_image_url_https': tweet.user_profile_image_url_https,
+            }
+
+    for user in User.query:
+        if user.id in included_users:
+            included_user = included_users[user.id]
+            user.name = included_user['name']
+            user.screen_name = included_user['screen_name']
+            user.description = included_user['description']
+            user.profile_image_url_https = included_user['profile_image_url_https']
+        else:
+            db.session.delete(user)
 
     db.session.commit()
 
 
 if __name__ == "__main__":
-    #update_tweets_test('q=eveonline')
     main()

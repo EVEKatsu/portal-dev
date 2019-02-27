@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+import datetime
 import re
 
 import twitter
@@ -24,7 +24,7 @@ BAN_USERS = [
 
 def update_tweets(category, query, filter_type=None):
     results = api.GetSearch(raw_query=query)
-    
+
     for result in results:
         params = result.AsDict()
         user = User.query.filter(User.id == params['user']['id']).first()
@@ -44,24 +44,29 @@ def update_tweets(category, query, filter_type=None):
         if 'retweeted_status' in params or params['user']['id'] in BAN_USERS or tweet_exists:
             continue
 
-        if user_exists:
-            user.updated_at = datetime.now()
-        else:
+        description = ''
+        if 'description' in params['user']:
+            description = params['user']['description']
+
+        if not user_exists:
             new_user = User(
                 id=params['user']['id'],
                 name=params['user']['name'],
                 screen_name=params['user']['screen_name'],
-                ban=False,
+                description=description,
                 profile_image_url_https=params['user']['profile_image_url_https'],
-                created_at=datetime.now(),
-                updated_at=datetime.now(),
+                tweets_count=0
             )
-            db.session.add(new_user)           
+            db.session.add(new_user)
 
         tweet = Tweet(
             id=params['id'],
             category=category,
             user_id=params['user']['id'],
+            user_name=params['user']['name'],
+            user_screen_name=params['user']['screen_name'],
+            user_description=description,
+            user_profile_image_url_https=params['user']['profile_image_url_https'],
             ban=False,
             text=params['text'],
             created_at=params['created_at'],
@@ -79,8 +84,20 @@ def update_tweets_test():
 def main():
     for category, query, filter_type in settings.SEARCH_QUERIES:
         update_tweets(category, query, filter_type)
-        db.session.commit()
 
+    User.query.update({'tweets_count': 0})
+    limit_datetime = datetime.datetime.now() - datetime.timedelta(days=settings.DEADLINE_DAYS)
+    count_dict = {}
+    for tweet in Tweet.query.filter(Tweet.created_at > limit_datetime):
+        if tweet.user_id not in count_dict:
+            count_dict[tweet.user_id] = 0
+
+        count_dict[tweet.user_id] += 1
+
+    for key, val in count_dict.items():
+        User.query.filter(User.id == key).first().tweets_count = val
+
+    db.session.commit()
 
 if __name__ == "__main__":
     #update_tweets_test()

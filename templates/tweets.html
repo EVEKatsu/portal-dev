@@ -24,7 +24,7 @@
 
 <div class="row">
     {% for title, link in TWEETS_MENUITEMS %}
-        <a class="col-6 col-lg-3 text-center sub-menu-item{% if link == category %} active{% endif %}" href={{ url_for('tweets', page=1, category=link) }}>{{ title }}</a>
+        <a class="col-6 col-lg-3 text-center sub-menu-item{% if link == category %} active{% endif %}" href={{ url_for(endpoint, page=1, category=link, **pagination_kwargs) }}>{{ title }}</a>
     {% endfor %}
 </div>
 
@@ -38,7 +38,7 @@
 
 {% import "_pagination.html" as p %}
 {% if tweets %}
-    {{ p.pagination_widget(tweets, 'tweets', category=category) }}
+    {{ p.pagination_widget(tweets, endpoint, category=category, **pagination_kwargs) }}
 {% endif %}
 
 {% endblock content %}

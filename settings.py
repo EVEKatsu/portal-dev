@@ -1,13 +1,16 @@
 import os
+import math
 
 DEBUG = os.environ.get('EVEKATSU_DEBUG', 'false').lower() == 'true'
 
 VERSION = '2'
 
-DEFAULT_PAGINATION = int(os.environ.get('DEFAULT_PAGINATION', 30))
+DEADLINE_DAYS = int(os.environ.get('DEADLINE_DAYS', 100))
 
-MAXIMUM_LIMIT_TWEETS = int(os.environ.get('MAXIMUM_LIMIT_TWEETS', 5000))
-MAXIMUM_LIMIT_USERS = int(os.environ.get('MAXIMUM_LIMIT_USERS', 1000))
+TWEETS_PER_PAGE = int(os.environ.get('TWEETS_PER_PAGE', 30))
+USERS_PER_PAGE = int(os.environ.get('USERS_PER_PAGE', 30))
+
+TWEETS_MAXIMUM_LIMIT = int(os.environ.get('TWEETS_MAXIMUM_LIMIT', 6000))
 
 DEFAULT_CATEGORY = 'misc'
 DEFAULT_SEARCH_QUERY = '%20exclude%3Aretweets&src=typd&lang=ja&count=100'

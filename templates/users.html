@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>ツイッター | {{ SITENAME }}</title>
+  
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@evekatsu" />
+<meta name="twitter:title" content="ツイッター | {{ SITENAME }}" />
+<meta name="twitter:url" content="{{ SITEURL }}/tweets" />
+<meta name="twitter:image:src" content="{{ SITEURL }}/static/images/icon.png" />
+<meta name="twitter:description" content="#evejapan のツイート一覧です" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="ツイッター | {{ SITENAME }}" />
+<meta property="og:url" content="{{ SITEURL }}/tweets" />
+<meta property="og:image" content="{{ SITEURL }}/static/images/icon.png" />
+<meta property="og:description" content="#evejapan のツイート一覧です" />
+
+<script src="https://platform.twitter.com/widgets.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bricklayer/0.4.2/bricklayer.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/bricklayer/0.4.2/bricklayer.min.js"></script>
+
+{% endblock head %}
+
+{% block content %}
+
+<div class='bricklayer'>
+    {% for user in users.items %}
+    <div class="card bg-light" style="margin-bottom: 10px">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-9 col-xs-9">
+                    <a href="{{ url_for('user', user_id=user.id) }}">@{{ user.screen_name }}</a>
+                </div>
+                <div class="col-sm-3 col-xs-3">
+                    <a href="https://twitter.com/{{ user.screen_name }}?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false"></a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-9 col-xs-9">
+                    <h5 class="card-title" style="height: 45px; display: flex; align-items: center">
+                        {{ user.name }}
+                    </h5>
+                </div>
+                <div class="col-sm-3 col-xs-3">
+                    <img src="{{ user.profile_image_url_https }}">
+                </div>
+            </div>
+            <p class="card-text">{{ user.description }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div style="margin-top: 40px"></div>
+
+{% import "_pagination.html" as p %}
+{% if users %}
+    {{ p.pagination_widget(users, 'users') }}
+{% endif %}
+
+<style>
+    @media screen and (min-width: 768px) {
+        .bricklayer-column-sizer {
+            width: 40%;
+        }
+    }
+</style>
+<script type="text/javascript">
+    var bricklayer = new Bricklayer(document.querySelector('.bricklayer'))
+</script>
+
+{% endblock content %}
