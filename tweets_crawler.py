@@ -20,7 +20,7 @@ BAN_USERS = [108954366, 2841563053]
 URL_PATTERN = r'https?:\/\/[-_\.!~*\'()a-zA-Z0-9;\/?:\@&=\+\$,%#]+'
 
 def update_tweets(category, query, exlude):
-    results = api.GetSearch(raw_query='q=' + query + settings.DEFAULT_SEARCH_QUERY)
+    results = api.GetSearch(raw_query=query)
     for result in results:
         params = result.AsDict()
 
@@ -66,16 +66,16 @@ def update_tweets(category, query, exlude):
         db.session.add(tweet)
 
 
-def update_tweets_test(query_index):
-    q = settings.SEARCH_QUERIES[query_index]
-    update_tweets('test', q[1], True)
+def update_tweets_test(query, exlude=False):
+    update_tweets('test', query, exlude)
     db.session.commit()
 
 
 def main():
     for category, query, exlude in settings.SEARCH_QUERIES:
-         update_tweets(category, query, exlude)
-         db.session.commit()
+        q = 'q=' +  query + settings.DEFAULT_SEARCH_QUERY
+        update_tweets(category, q, exlude)
+        db.session.commit()
 
     tweets = Tweet.query.order_by(Tweet.created_at.desc()).offset(1000)
     for tweet in tweets:
@@ -85,4 +85,5 @@ def main():
 
 
 if __name__ == "__main__":
+    #update_tweets_test('q=eveonline')
     main()
