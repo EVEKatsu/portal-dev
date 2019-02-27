@@ -29,7 +29,7 @@
 </div>
 
 {% for tweet in tweets.items %}
-    <blockquote style="display: none" class="twitter-tweet"  data-lang="ja" data-conversation="none" data-align="center" data-width="550" data-height="300px">
+    <blockquote style="display: none" class="twitter-tweet"  data-lang="ja" data-align="center" data-width="550" data-height="300px">
         <img src="{{ tweet.profile_image_url_https }}" style="float: left; margin-right: 5px;" />
         <p>{{ tweet.text | safe }}</p>
         <p style="clear:both;"></p>
