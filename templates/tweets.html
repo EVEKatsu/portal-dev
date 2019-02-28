@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>{{ title | default('ツイッター') }} | {{ SITENAME }}</title>
+<title>{{ TITLE | default('ツイッター') }} | {{ SITENAME }}</title>
  
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@evekatsu" />
-<meta name="twitter:title" content="{{ title | default('ツイッター') }} | {{ SITENAME }}" />
-<meta name="twitter:url" content="{{ SITEURL }}/tweets" />
+<meta name="twitter:title" content="{{ TITLE | default('ツイッター') }} | {{ SITENAME }}" />
+<meta name="twitter:url" content="{{ SITEURL }}/{{ ENDPOINT }}" />
 <meta name="twitter:image:src" content="{{ SITEURL }}/static/images/icon.png" />
-<meta name="twitter:description" content="{{ description | default('EVE Onlineを遊んでいる人たちのツイートです') }}" />
+<meta name="twitter:description" content="{{ DESCRIPTION | default('EVE Onlineを遊んでいる人たちのツイートです') }}" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="{{ title | default('ツイッター') }} | {{ SITENAME }}" />
-<meta property="og:url" content="{{ SITEURL }}/tweets" />
+<meta property="og:title" content="{{ TITLE | default('ツイッター') }} | {{ SITENAME }}" />
+<meta property="og:url" content="{{ SITEURL }}/{{ ENDPOINT }}" />
 <meta property="og:image" content="{{ SITEURL }}/static/images/icon.png" />
-<meta property="og:description" content="{{ description | default('EVE Onlineを遊んでいる人たちのツイートです') }}" />
+<meta property="og:description" content="{{ DESCRIPTION | default('EVE Onlineを遊んでいる人たちのツイートです') }}" />
 
 <script src="https://platform.twitter.com/widgets.js"></script>
 
@@ -22,11 +22,10 @@
 
 {% block content %}
 
-<div class="row">
-    {% for title, link in TWEETS_MENUITEMS %}
-        <a class="col-6 col-lg-3 text-center sub-menu-item{% if link == category %} active{% endif %}" href={{ url_for(endpoint, page=1, category=link, **pagination_kwargs) }}>{{ title }}</a>
-    {% endfor %}
-</div>
+{% import "_submenu.html" as s %}
+{% if TWEETS_MENUITEMS %}
+    {{ s.submenu_widget(TWEETS_MENUITEMS, ENDPOINT, category, page=1) }}
+{% endif %}
 
 {% for tweet in tweets.items %}
     <blockquote style="display: none" class="twitter-tweet"  data-lang="ja" data-align="center" data-width="550" data-height="300px">
@@ -38,7 +37,7 @@
 
 {% import "_pagination.html" as p %}
 {% if tweets %}
-    {{ p.pagination_widget(tweets, endpoint, category=category, **pagination_kwargs) }}
+    {{ p.pagination_widget(tweets, ENDPOINT, **pagination_kwargs) }}
 {% endif %}
 
 {% endblock content %}

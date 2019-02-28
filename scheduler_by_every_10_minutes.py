@@ -1,18 +1,20 @@
 import os
 import datetime
 import re
+import json
+import urllib.parse
 
-import twitter
+from requests_oauthlib import OAuth1Session
 
 import settings
 from initialize import app, db
 from models import Tweet, User
 
-api = twitter.Api(
-    consumer_key=os.environ["CONSUMER_KEY"],
-    consumer_secret=os.environ["CONSUMER_SECRET"],
-    access_token_key=os.environ["ACCESS_TOKEN_KEY"],
-    access_token_secret=os.environ["ACCESS_TOKEN_SECRET"],
+twitter = OAuth1Session(
+    os.environ["CONSUMER_KEY"],
+    os.environ["CONSUMER_SECRET"],
+    os.environ["ACCESS_TOKEN_KEY"],
+    os.environ["ACCESS_TOKEN_SECRET"],
 )
 
 BAN_USERS = [
@@ -21,14 +23,21 @@ BAN_USERS = [
     2485360038, # @EVE_dokuimo
 ]
 
+SEARCH_API_URL = "https://api.twitter.com/1.1/search/tweets.json"
 
-def update_tweets(category, query, exclude_keyword, only_included_ids):
-    results = api.GetSearch(raw_query=query)
 
-    for result in results:
-        params = result.AsDict()
+def update_tweets(category, search_words, exclude_keyword, only_included_ids):
+    search_params = settings.DEFAULT_SEARCH_PARAMS.copy()
+    search_params['q'] = search_words + ' exclude:retweets'
+    requests = twitter.get(SEARCH_API_URL, params=search_params)
+
+    if requests.status_code != 200:
+        print('!!!!!ERROR!!!!! - %d' % requests.status_code)
+        return
+
+    for params in json.loads(requests.text)['statuses']:
         user = User.query.filter(User.id == params['user']['id']).first()
-        user_exists = user != None
+        user_exists = user is not None
 
         if exclude_keyword:
             screen_name = params['user']['screen_name'].lower()
@@ -77,15 +86,14 @@ def update_tweets(category, query, exclude_keyword, only_included_ids):
 
 
 def update_tweets_test():
-    from settings import DEFAULT_SEARCH_QUERY, SEARCH_EXCLUDE_KEYWORDS, SEARCH_ONLY_INCLUDED_ID
-    query = 'q=eve' + DEFAULT_SEARCH_QUERY
-    update_tweets('test', query, None)
+    update_tweets('misc', 'eveonline OR "eve online" lang:ja', r'eve ?online', False)
     db.session.commit()
 
 
 def main():
     for category, query, exclude_keyword, only_included_ids in settings.SEARCH_QUERIES:
-        update_tweets(category, query, exclude_keyword, only_included_ids)
+        update_tweets(category,
+         query, exclude_keyword, only_included_ids)
 
     User.query.update({'tweets_count': 0})
     limit_datetime = datetime.datetime.now() - datetime.timedelta(days=settings.DEADLINE_DAYS)

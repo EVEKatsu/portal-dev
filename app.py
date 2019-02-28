@@ -19,15 +19,9 @@ def default_kwargs():
     'MENUITEMS': (
       ('プレイヤー', 'users'),
       ('ツイッター', 'tweets'),
-      ('ブログ', 'feeds'),
+      ('ブログ', 'articles'),
       ('動画', 'videos'),
       ('ランキング', 'ranking'),
-    ),
-    'TWEETS_MENUITEMS': (
-      ('すべて', 'all'),
-      ('#evejapan', 'evejapan'),
-      ('#eveonline', 'eveonline'),
-      ('その他', 'misc'),
     ),
   }
 
@@ -47,39 +41,42 @@ def users(page):
 
   return default_render('users.html', kwargs)
 
-@app.route('/user/<int:user_id>/', defaults={'category': 'all', 'page': 1})
-@app.route("/user/<int:user_id>/<string:category>/<int:page>")
-def user(user_id, category, page):
+@app.route('/user/<int:user_id>', defaults={'page': 1})
+@app.route("/user/<int:user_id>/<int:page>")
+def user(user_id, page):
   user = User.query.filter(User.id == user_id).first()
   name = '%s(%s)さん' % (user.name, user.screen_name)
   kwargs = {
-    'category': category,
-    'endpoint': 'user',
-    'title': name,
-    'description': name + 'のEVE Onlineについてのツイートです',
+    'ENDPOINT': 'user',
+    'TITLE': name,
+    'DESCRIPTION': name + 'のEVE Onlineについてのツイートです',
     'pagination_kwargs': {
       'user_id': user_id,
     },
   }
 
-  if category == 'all':
-    query = Tweet.query
-  else:
-    query = Tweet.query.filter(Tweet.category == category)
-
-  kwargs['tweets'] =  query.filter(Tweet.user_id == user_id). \
+  kwargs['tweets'] =  Tweet.query.filter(Tweet.user_id == user_id). \
                       order_by(Tweet.created_at.desc()). \
                       paginate(page, settings.TWEETS_PER_PAGE)
 
   return default_render('tweets.html', kwargs)
 
-@app.route('/tweets', defaults={'category': 'all', 'page': 1})
-@app.route("/tweets/<string:category>/<int:page>")
-def tweets(category, page):
+@app.route('/tweets', defaults={'submenu': 'all', 'page': 1})
+@app.route("/tweets/<string:submenu>/<int:page>")
+def tweets(submenu, page):
+  category = submenu
   kwargs = {
+    'ENDPOINT': 'tweets',
+    'TWEETS_MENUITEMS': (
+      ('すべて', 'all'),
+      ('#evejapan', 'evejapan'),
+      ('#eveonline', 'eveonline'),
+      ('その他', 'misc'),
+    ),
     'category': category,
-    'endpoint': 'tweets',
-    'pagination_kwargs': {},
+    'pagination_kwargs': {
+      'submenu': category,
+    },
   }
 
   if category == 'all':
@@ -94,10 +91,10 @@ def tweets(category, page):
 
   return default_render('tweets.html', kwargs)
 
-@app.route('/feeds', defaults={'page': 1})
-@app.route("/feeds/<int:page>")
-def feeds(page):
-  return default_render('feeds.html')
+@app.route('/articles', defaults={'page': 1})
+@app.route("/articles/<int:page>")
+def articles(page):
+  return default_render('articles.html')
 
 @app.route('/videos', defaults={'page': 1})
 @app.route("/videos/<int:page>")
