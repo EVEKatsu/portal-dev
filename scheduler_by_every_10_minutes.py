@@ -92,8 +92,7 @@ def update_tweets_test():
 
 def main():
     for category, query, exclude_keyword, only_included_ids in settings.SEARCH_QUERIES:
-        update_tweets(category,
-         query, exclude_keyword, only_included_ids)
+        update_tweets(category, query, exclude_keyword, only_included_ids)
 
     User.query.update({'tweets_count': 0})
     limit_datetime = datetime.datetime.now() - datetime.timedelta(days=settings.DEADLINE_DAYS)
