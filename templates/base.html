@@ -95,7 +95,7 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right">
             {% for title, link, icon in DROPDOWN_MENUITEMS %}
-            <a class="dropdown-item" href="{{ url_for('index') }}" style="padding-top: 15px; padding-bottom: 15px"><span class="{{ icon }}"></span> {{ title }}</a>
+            <a class="dropdown-item" href="{{ url_for(link) }}" style="padding-top: 15px; padding-bottom: 15px"><span class="{{ icon }}"></span> {{ title }}</a>
             {% endfor %}
           </div>
         </div>

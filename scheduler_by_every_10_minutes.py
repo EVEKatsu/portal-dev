@@ -109,5 +109,8 @@ def main():
     db.session.commit()
 
 if __name__ == "__main__":
-    update_tweets_test()
-    #main()
+    if settings.DEBUG:
+        update_tweets_test()
+        #main()
+    else:
+        main()
