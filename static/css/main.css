@@ -50,7 +50,7 @@ blockquote.twitter-tweet {
     box-shadow: 0 0 0 0.2rem rgba(0,0,0,.3);
 }
 
-.page-item.disabled .page-link {
+.page-item.disabled a, .page-item.disabled .page-link {
     color: rgba(0,0,0,.3);
 }
 

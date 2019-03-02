@@ -110,7 +110,7 @@ def main():
 
 if __name__ == "__main__":
     if settings.DEBUG:
-        update_tweets_test()
-        #main()
+        #update_tweets_test()
+        main()
     else:
         main()
