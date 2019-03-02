@@ -17,11 +17,16 @@ def default_kwargs():
     'DATETIME': datetime.datetime.now(),
     'VERSION': settings.VERSION,
     'MENUITEMS': (
-      ('プレイヤー', 'users'),
-      ('ツイッター', 'tweets'),
-      ('ブログ', 'articles'),
-      ('動画', 'videos'),
-      ('ランキング', 'ranking'),
+      ('プレイヤー', 'users', 'fas fa-users'),
+      ('ツイッター', 'tweets', 'fab fa-twitter'),
+      ('ブログ', 'articles', 'fas fa-rss'),
+      ('動画', 'videos', 'fab fa-youtube'),
+    ),
+    'DROPDOWN_MENUITEMS': (
+      ('ホーム', 'index', 'fas fa-home'),
+      ('ランキング', 'ranking', 'fas fa-sort-amount-down'),
+      ('お問い合わせ', 'contact', 'fas fa-headset'),
+      ('ヘルプ', 'help', 'fas fa-question-circle'),
     ),
   }
 
@@ -31,6 +36,14 @@ def default_render(template_name_or_list, kwargs={}):
 @app.route("/")
 def index():
   return default_render('index.html')
+
+@app.route("/contact")
+def contact():
+  return default_render('contact.html')
+
+@app.route("/help")
+def help():
+  return default_render('help.html')
 
 @app.route('/users', defaults={'page': 1})
 @app.route("/users/<int:page>")
@@ -71,6 +84,7 @@ def tweets(submenu, page):
       ('すべて', 'all'),
       ('#evejapan', 'evejapan'),
       ('#eveonline', 'eveonline'),
+      ('zKillboard', 'zkillboard'),
       ('その他', 'misc'),
     ),
     'category': category,

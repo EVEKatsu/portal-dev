@@ -86,7 +86,7 @@ def update_tweets(category, search_words, exclude_keyword, only_included_ids):
 
 
 def update_tweets_test():
-    update_tweets('misc', 'eveonline OR "eve online" lang:ja', r'eve ?online', False)
+    update_tweets('zkillboard', 'zkillboard.com lang:ja', None, False)
     db.session.commit()
 
 
@@ -109,5 +109,5 @@ def main():
     db.session.commit()
 
 if __name__ == "__main__":
-    #update_tweets_test()
-    main()
+    update_tweets_test()
+    #main()

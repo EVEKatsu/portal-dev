@@ -28,15 +28,47 @@ blockquote.twitter-tweet {
     padding-bottom: 5px;
 }
 
-.sub-menu-item {
-    padding: 0.75rem 0rem;
-    background-color: #6c757d;
-    opacity: 0.65;
-}
-.sub-menu-item.active {
-    opacity: 1;
-}
-a.sub-menu-item {
-    color: white;
+.dropdown-item:active {
+    background-color: #f8f9fa;
 }
 
+.page-item.active .page-link {
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.page-link {
+    color: #343a40;
+}
+
+.page-link:hover {
+    color: #343a40;
+    border-color: rgba(0,0,0,.3);
+}
+
+.page-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0,0,0,.3);
+}
+
+.page-item.disabled .page-link {
+    color: rgba(0,0,0,.3);
+}
+
+header .navbar {
+    padding: 0;
+}
+
+.navbar-expand-nav {
+    margin-bottom: 0;
+}
+
+.navbar-light .navbar-expand-nav .nav-link {
+    font-size: 1.7rem;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.navbar-light .navbar-expand-nav .nav-link:hover, .navbar-light .navbar-expandnav .nav-link:focus {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+  

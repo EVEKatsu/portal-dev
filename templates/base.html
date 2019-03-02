@@ -24,6 +24,8 @@
 
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}?{{ VERSION }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/glyphicons.css') }}?{{ VERSION }}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link rel="shortcut icon" href="{{ url_for('static', filename='images/icon.png') }}" type="image/png" />
 
   <style type="text/css">
@@ -67,24 +69,37 @@
 <body>
 
 <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-sm navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand" href="{{ url_for('index') }}">
-        <img src="{{ url_for('static', filename='images/icon.png') }}" width="30" height="30" class="d-inline-block align-top mr-1" alt="Evekatsu">
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
 
-      <div class="collapse navbar-collapse" id="navbar">
+      <div class="navbar-toggler" aria-expanded="false" style="border: none; padding: 1.08rem 0rem">
+        <ul class="list-inline navbar-expand-nav">
+          {% for title, link, icon in MENUITEMS %}
+          <li class="nav-item"><a href="{{ url_for(link) }}" class="nav-link"><span class="{{ icon }}"></span></a></li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbar" style="padding: 1.2rem 1.5rem">
         <ul class="navbar-nav mr-auto">
-          {% for title, link in MENUITEMS %}
+          {% for title, link, icon in MENUITEMS %}
           <li class="nav-item {% if request.endpoint == link %}active{% endif %}">
-              <a class="nav-link" href="{{ url_for(link) }}">{{ title }}</a>
+              <a class="nav-link" href="{{ url_for(link) }}"><span class="{{ icon }}"></span> {{ title }}</a>
             </li>
           {% endfor %}
         </ul>
       </div>
+
+      <div class="btn-group" style=>
+          <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src="{{ url_for('static', filename='images/icon.png') }}" width="30" height="30" class="d-inline-block align-top mr-1" alt="Evekatsu">
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            {% for title, link, icon in DROPDOWN_MENUITEMS %}
+            <a class="dropdown-item" href="{{ url_for('index') }}" style="padding-top: 15px; padding-bottom: 15px"><span class="{{ icon }}"></span> {{ title }}</a>
+            {% endfor %}
+          </div>
+        </div>
     </div>
   </nav>
 </header>

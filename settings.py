@@ -24,6 +24,7 @@ SEARCH_QUERIES = [
     # (category, search_words, exclude_keyword, only_included_ids)
     ('evejapan', '#evejapan',  None, False),
     ('eveonline', '#eveonline lang:ja', None, False),
+    ('zkillboard', 'zkillboard.com lang:ja', None, False),
     (DEFAULT_CATEGORY, DEFAULT_MISC_QUERY, r'eve ?online', False),
     (DEFAULT_CATEGORY, 'eve lang:ja', r'eve', True),
     (DEFAULT_CATEGORY, 'イブ', None, True),
