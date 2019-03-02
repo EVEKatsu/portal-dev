@@ -26,6 +26,8 @@ SEARCH_QUERIES = [
     ('eveonline', '#eveonline lang:ja', None, False),
     ('zkillboard', 'zkillboard.com lang:ja', None, False),
     ('zkillboard', 'br.inyour.space lang:ja', None, False),
+    ('zkillboard', 'zkillboard.com', None, True),
+    ('zkillboard', 'br.inyour.space', None, True),
     (DEFAULT_CATEGORY, DEFAULT_MISC_QUERY, r'eve ?online', False),
     (DEFAULT_CATEGORY, 'eve lang:ja', r'eve', True),
     (DEFAULT_CATEGORY, 'イブ', None, True),
