@@ -2,7 +2,7 @@ import os
 
 DEBUG = os.environ.get('EVEKATSU_DEBUG', 'false').lower() == 'true'
 
-VERSION = '2'
+VERSION = '3'
 
 DEADLINE_DAYS = int(os.environ.get('DEADLINE_DAYS', 100))
 
