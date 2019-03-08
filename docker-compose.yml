@@ -1,0 +1,32 @@
+version: "2"
+
+volumes:
+  db-data:
+    driver: local
+
+services:
+  nginx:
+    image: evekatsu-nginx
+    build: dockerfiles/nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/app
+
+  postgres:
+    image: evekatsu-postgres
+    build: dockerfiles/postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  python:
+    image: evekatsu-python
+    build: dockerfiles/python
+    env_file:
+      - ./evekatsu.env
+    volumes:
+      - ./:/app
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://develop:password@postgres:5432/evekatsu-dev
+      - EVEKATSU_DEBUG=true
+    entrypoint: /app/launch-evekatsu.sh
