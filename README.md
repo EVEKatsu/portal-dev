@@ -2,7 +2,7 @@
 This website is the portal site of Japanese EVE Online community.
 
 ## License
-evekatsu.github.io is licensed under the The Unlicense, see LICENSE.
+evekatsu.github.io is licensed under The Unlicense, see LICENSE.
 
 ## Contacts
 * [Discord](https://discord.gg/XK9A348): EVE Japanese IT
