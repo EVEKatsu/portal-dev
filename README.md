@@ -1,5 +1,5 @@
 ## What is it?
-This website will report the news of Japanese EVE Online players.
+This website is the portal site of Japanese EVE Online community.
 
 ## License
 evekatsu.github.io is licensed under the The Unlicense, see LICENSE.
