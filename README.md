@@ -5,10 +5,9 @@ This website will report the news of Japanese EVE Online players.
 evekatsu.github.io is licensed under the The Unlicense, see LICENSE.
 
 ## Contacts
-* Omochin
-    * GitHub: @Omochin
-    * [Twitter](https://twitter.com/omochin4eve): @omochin4eve
-    * Email: omochin7@gmail.com
+* [Discord](https://discord.gg/XK9A348): EVE Japanese IT
+* [Twitter](https://twitter.com/evekatsu): @evekatsu
+* Email: omochin7@gmail.com
 
 ## Launch local develop environment
 
